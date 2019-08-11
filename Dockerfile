@@ -16,7 +16,7 @@ EXPOSE $BAMBOO_JMS_CONNECTION_PORT
 
 RUN set -x && \
      addgroup ${BAMBOO_GROUP} && \
-     adduser ${BAMBOO_USER} --gecos "" --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password &&
+     adduser ${BAMBOO_USER} --home ${BAMBOO_USER_HOME} --ingroup ${BAMBOO_GROUP} --disabled-password
 
 RUN set -x && \
      apt-get update && \
