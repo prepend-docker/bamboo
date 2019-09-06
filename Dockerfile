@@ -26,6 +26,7 @@ RUN set -x && \
           bash \
           procps \
           openssl \
+          libtcnative-1 \
           maven \
      && \
 # create symlink to maven to automate capability detection
@@ -36,8 +37,9 @@ ARG BAMBOO_VERSION=6.9.2
 ARG DOWNLOAD_URL=https://www.atlassian.com/software/bamboo/downloads/binary/atlassian-bamboo-${BAMBOO_VERSION}.tar.gz
 
 RUN set -x && \
-     mkdir -p ${BAMBOO_SERVER_INSTALL_DIR} && \
+     mkdir -p ${BAMBOO_SERVER_INSTALL_DIR}/lib/native && \
      mkdir -p ${BAMBOO_SERVER_HOME} && \
+     ln --symbolic "/usr/lib/x86_64-linux-gnu/libtcnative-1.so" "${BAMBOO_SERVER_INSTALL_DIR}/lib/native/libtcnative-1.so" && \
      curl -L --silent ${DOWNLOAD_URL} | tar -xz --strip-components=1 -C "$BAMBOO_SERVER_INSTALL_DIR" && \
      echo "bamboo.home=${BAMBOO_SERVER_HOME}" > $BAMBOO_SERVER_INSTALL_DIR/atlassian-bamboo/WEB-INF/classes/bamboo-init.properties && \
      chown -R "${BAMBOO_USER}:${BAMBOO_GROUP}" "${BAMBOO_SERVER_INSTALL_DIR}" && \
