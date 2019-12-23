@@ -1,6 +1,5 @@
 Bamboo is a continuous integration and continuous deployment server. Learn more about [Bamboo](<https://www.atlassian.com/software/bamboo>).
 
-If you are looking for **Bamboo Agent Docker Image** it can be found [here](https://hub.docker.com/r/atlassian/bamboo-agent-base/).
 
 # Overview
 
@@ -16,13 +15,13 @@ For the `BAMBOO_HOME` directory that is used to store, among other things, the c
 Volume permission is managed by entry scripts. To get started you can use a data volume, or named volumes. In this example we'll use named volumes.
 
     $> docker volume create --name bambooVolume
-    $> docker run -v bambooVolume:/var/atlassian/application-data/bamboo --name="bamboo" --init -d -p 54663:54663 -p 8085:8085 atlassian/bamboo-server
+    $> docker run -v bambooVolume:/var/atlassian/application-data/bamboo --name="bamboo" --init -d -p 54663:54663 -p 8085:8085 prepend2/bamboo
 
 Note that this command can be replaced by named volumes.
 
 Start Atlassian Bamboo:
 
-    $> docker run -v /data/bamboo:/var/atlassian/application-data/bamboo --name="bamboo-server" --host=bamboo-server --init -d -p 54663:54663 -p 8085:8085 atlassian/bamboo-server
+    $> docker run -v /data/bamboo:/var/atlassian/application-data/bamboo --name="bamboo-server" --host=bamboo-server --init -d -p 54663:54663 -p 8085:8085 prepend2/bamboo
 
 **Success**. Bamboo is now available on [http://localhost:8085](http://localhost:8085)*. 
 
@@ -55,7 +54,7 @@ container and start a new one based on a more recent image:
 
     $> docker stop bamboo
     $> docker rm bamboo
-    $> docker pull atlassian/bamboo-server:<desired_version>
+    $> docker pull prepend2/bamboo:<desired_version>
     $> docker run ... (See above)
 
 As your data is stored in the data volume directory on the host it will still
@@ -80,10 +79,10 @@ If you want to run Bamboo Server and Agent containers on one host (in one Docker
 
     $> docker network create bamboo
     
-You can start Bamboo Server and Agent using following commands:
+You can start Bamboo Server using following commands:
 
-    $> docker run -v bambooVolume:/var/atlassian/application-data/bamboo --name bamboo-server --network bamboo --hostname bamboo-server --init -d -p 8085:8085 atlassian/bamboo-server
-    $> docker run -v bambooAgentVolume:/home/bamboo/bamboo-agent-home --name bamboo-agent --network bamboo --hostname bamboo-agent --init -d atlassian/bamboo-agent-base http://bamboo-server:8085
+    $> docker run -v bambooVolume:/var/atlassian/application-data/bamboo --name bamboo-server --network bamboo --hostname bamboo-server --init -d -p 8085:8085 prepend2/bamboo
+
 
 # Support
 
@@ -107,4 +106,4 @@ changed manually in *Administration* &rarr; *Security settings*.
 
 Tomcat was upgraded to version 8.5.32. Default security settings were made more strict for umask, instead of 0022 it's 0027. If you want to keep same behavior use "-e UMASK=0022" variable when run Docker image, e.g.
     
-    $> docker run -d --name=bamboo671  -p 8085:8085 -p 54663:54663 -e UMASK=0022 -v bambooVolume:/var/atlassian/application-data/bamboo atlassian/bamboo-server:6.7.1
+    $> docker run -d --name=bamboo671  -p 8085:8085 -p 54663:54663 -e UMASK=0022 -v bambooVolume:/var/atlassian/application-data/bamboo prepend2/bamboo:6.7.1
