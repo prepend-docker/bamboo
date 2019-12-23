@@ -1,6 +1,10 @@
 FROM ubuntu:18.04
 MAINTAINER Atlassian Bamboo Team
 
+ENV RUN_USER							bamboo
+ENV RUN_GROUP							bamboo
+ENV RUN_UID							2005
+ENV RUN_GID							2005
 ARG BAMBOO_VERSION=6.10.4
 ENV BAMBOO_USER=bamboo
 ENV BAMBOO_GROUP=bamboo
